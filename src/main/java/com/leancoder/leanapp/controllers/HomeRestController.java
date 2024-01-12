@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.leancoder.leanapp.model.Producto;
 import com.leancoder.leanapp.model.User;
+import com.leancoder.leanapp.services.ProductoService;
 
 @RestController()
 public class HomeRestController {
@@ -32,8 +33,10 @@ public class HomeRestController {
     private Map<String, String> likedSongs;
     @Value("#{${values.likedSongs}.taemin}")
     private String bestSong;
+    /* @Autowired
+    private Environment environment; */
     @Autowired
-    private Environment environment;
+    private ProductoService productoService;
 
     @GetMapping("/rest/home")
     public Map<String, Object> Home(@RequestParam(defaultValue = "Hola mundo", required = false) String param) {
@@ -85,6 +88,13 @@ public class HomeRestController {
     public List<Object> getConfigValues() {
         return Arrays.asList(userName, listOfSongs.toArray()[0], password, songs.get(2), likedSongs.get("kai"),
                 bestSong);
+    }
+
+    @GetMapping("/getAllProducts")
+    public Map<String, List<Producto>> listAllProducts() {
+        Map<String, List<Producto>> body = new HashMap<>();
+        body.put("products", productoService.findAllRecords());
+        return body;
     }
 
 }
