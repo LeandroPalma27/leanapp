@@ -8,6 +8,8 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import com.leancoder.leanapp.model.Producto;
 
+import jakarta.annotation.PreDestroy;
+
 @Repository(value = "productoRepository")
 @RequestScope
 public class ProductoRepository implements IProductoRepository{
@@ -28,6 +30,11 @@ public class ProductoRepository implements IProductoRepository{
     public Boolean deleteById(long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+    }
+
+    @PreDestroy
+    public void destroy() {
+        System.out.println("Destruyendo el componente producto repository.");
     }
 
 }
